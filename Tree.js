@@ -1,6 +1,6 @@
 const createNode = require("./Node");
 
-export function createTree(arr) {
+function createTree(arr) {
   function sortAndRemoveDuplicates(arr) {
     arr.sort((a, b) => a - b);
     const duplicatesRemoved = [...new Set(arr)];
@@ -97,16 +97,17 @@ export function createTree(arr) {
     const values = [];
     while (queue.length > 0) {
       const node = queue.shift();
+      if (node === null) {
+        continue;
+      }
       if (cb) {
         cb(node);
       } else {
         values.push(node.data);
       }
-
       queue.push(node.left);
       queue.push(node.right);
     }
-
     if (!cb) {
       return values;
     }
@@ -115,21 +116,19 @@ export function createTree(arr) {
   function levelOrderRec(cb, queue = [root], values = []) {
     if (queue.length > 0) {
       const node = queue.shift();
-      if (cb) {
-        cb(node);
-      } else {
-        values.push(node.data);
-      }
-      if (node.left) {
+      if (node) {
+        if (cb) {
+          cb(node);
+        } else {
+          values.push(node.data);
+        }
         queue.push(node.left);
-      }
-      if (node.right) {
         queue.push(node.right);
       }
     }
 
     if (queue.length > 0) {
-      levelOrderRec(cb, queue);
+      levelOrderRec(cb, queue, values);
     }
 
     if (!cb) {
@@ -250,3 +249,5 @@ export function createTree(arr) {
     reBalance,
   };
 }
+
+module.exports = createTree;
