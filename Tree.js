@@ -229,8 +229,8 @@ function createTree(arr) {
 
   function reBalance() {
     const newArr = [];
-    inOrder(newArr.push);
-    root = buildTree(newArr);
+    inOrder((data) => newArr.push(data));
+    root = buildTree(newArr, 0, newArr.length - 1);
   }
 
   return {
